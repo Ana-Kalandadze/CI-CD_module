@@ -1,18 +1,71 @@
 pipeline {
     agent any
-    
     stages {
-        stage('Set Up Environment') {
+        stage('Checkout') {
             steps {
-                sh 'apt update'
-                sh 'apt install -y python3.11-venv'
-                sh 'python3 -m venv venv'
-                sh '. venv/bin/activate'
-                sh 'pip install -r requirements.txt'
-            }}
-        stage('Run Python Tests') {
+                checkout scm
+            }
+        }
+
+        stage('Set up Python environment') {
             steps {
-                sh 'python3 AdventureWorks2012_test.py'
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        python3 -m venv env
+                        . env/bin/activate
+                        py_version=$(python3 --version)
+                        pip_version=$(pip --version)
+                        echo "Python version : $py_version"
+                        echo "Pip version : $pip_version"
+                        '''
+                    } else {
+                        bat '''
+                        python3 -m venv env
+                        .\\env\\Scripts\\activate
+                        py_version=$(python3 --version)
+                        pip_version=$(pip --version)
+                        echo "Python version : $py_version"
+                        echo "Pip version : $pip_version"
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Install dependencies') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        . env/bin/activate
+                        pip install -r requirements.txt
+                        '''
+                    } else {
+                        bat '''
+                        .\\env\\Scripts\\activate
+                        pip install -r requirements.txt
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Run tests') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh '''
+                        . env/bin/activate
+                        python3 AdventureWorks2012_test.py
+                        '''
+                    } else {
+                        bat '''
+                        .\\env\\Scripts\\activate
+                        python3 AdventureWorks2012_test.py
+                        '''
+                    }
+                }
             }
         }
     }
