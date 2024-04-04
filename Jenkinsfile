@@ -11,7 +11,7 @@ pipeline {
             }}
         stage('Run Python Tests') {
             steps {
-                sh 'AdventureWorks2012_test.py'
+                sh 'C:\Users\ana_kalandadze\Desktop\CI_CD\CI-CD_module\AdventureWorks2012_test.py'
             }
         }
     }
