@@ -1,23 +1,22 @@
 pipeline {
-    agent any 
-
+    agent any
+    
     stages {
-        stage('Build') { 
-            steps { 
-                echo 'Building.. Just Checking out the code from git' 
-                checkout scm 
-            }
-        }
-        stage('Test') { 
-            steps { 
-                echo 'Testing.. Just printing Hello, World!'
-                sh 'echo "Hello, World!"' 
-            }
-        }
-        stage('Deploy') { 
+        stage('Clone Repository') {
             steps {
-                echo 'Deploying.... For now just echo it!'
-                sh 'echo "Deploying!!"'
+                git branch: 'feature/adventure-works-test', url: 'https://github.com/Ana-Kalandadze/CI-CD_module.git'
+            }
+        }
+        stage('Set Up Environment') {
+            steps {
+                sh 'python -m venv venv'
+                sh 'source venv/bin/activate'
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        stage('Run Python Tests') {
+            steps {
+                sh 'AdventureWorks2012_test.py'
             }
         }
     }
