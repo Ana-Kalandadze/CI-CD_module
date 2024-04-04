@@ -1,3 +1,6 @@
+# How to use this project
+
+## Merging Strategy
 Chosen branch strategy: Git Flow
 
 Justification: Git Flow can be adapted for testing by treating test-related changes similarly to code changes.
@@ -11,3 +14,44 @@ The repository holds two main branches:
 Feature branches will be created for developing new tests or modifying existing ones.
 Pull requests will be opened for these test branches, allowing for review and collaboration on test code.
 Once tests are complete and passing, merge the test branches into the appropriate integration branch (develop)
+
+
+
+## Docker Setup Instructions
+
+1. Download and install Docker from https://www.docker.com/products/docker-desktop
+
+2. Run Jenkins within a Docker container using the following command:
+
+    ```
+    docker run --name jenkins-local -p 8080:8080 -p 50000:50000 -v /var/jenkins_home jenkins/jenkins:lts
+    ```
+
+## Jenkins Instructions
+
+1. Visit Jenkins at http://localhost:8080.
+
+2. Complete the Jenkins setup wizard, including initial password setup, installing plugins and setting up admin account.
+
+## Running the Jenkins Pipeline
+
+1. Create a new Pipeline Job in Jenkins
+
+2. Under the **Pipeline** section, choose **Pipeline script from SCM**. SCM > **git** and in Repository URL, enter this repo's URL.
+
+3. Press **Save**.
+
+4. Run the pipeline by clicking on your Job, then click **Build Now**. 
+
+## Pipeline Details
+
+Our pipeline involves stages such as **Setup**, **Build** and **Test**. 
+
+**Set up Python environment**: We set up a Python virtual environment and print Python and pip version for reference.
+
+**Install dependencies**: Our Python scripts' dependencies are installed via `requirements.txt`.
+
+**Run tests**: Our unit tests are run via `pytest` command.
+
+Once all tests pass successfully in `develop` branch, Jenkins will automatically checkout the `main` branch, commit all changes and push to `main`.
+
