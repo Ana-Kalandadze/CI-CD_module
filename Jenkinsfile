@@ -38,7 +38,7 @@ pipeline {
                 script {
                     sh '''
                     . env/bin/activate
-                    python3 -m pytest AdventureWorks2012_test.py
+                    python3 -m pytest adventure_test.py
                     '''
                 }
             }
