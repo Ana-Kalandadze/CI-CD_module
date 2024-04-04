@@ -1,0 +1,13 @@
+Chosen branch strategy: Git Flow
+
+Justification: Git Flow can be adapted for testing by treating test-related changes similarly to code changes.
+This will allow organized testing processes and ensure that test changes are properly integrated and tested before being merged into the main branch.
+
+Strategy Description:
+The repository holds two main branches:
+1. main  – the official release history of the project
+2. develop – the integration branch for features
+
+Feature branches will be created for developing new tests or modifying existing ones.
+Pull requests will be opened for these test branches, allowing for review and collaboration on test code.
+Once tests are complete and passing, merge the test branches into the appropriate integration branch (develop)
